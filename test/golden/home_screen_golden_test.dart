@@ -1,0 +1,14 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:flutter/material.dart';
+import '../../../lib/features/home/screens/home_screen.dart';
+
+void main() {
+  testGoldens('HomeScreen golden test', (tester) async {
+    await tester.pumpWidgetBuilder(
+      const MaterialApp(home: HomeScreen()),
+      surfaceSize: const Size(400, 800),
+    );
+    await screenMatchesGolden(tester, 'home_screen_golden');
+  });
+}
