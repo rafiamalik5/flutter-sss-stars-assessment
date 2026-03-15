@@ -1,47 +1,54 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/auth_provider.dart';
+import 'package:go_router/go_router.dart';
+import '../controller/auth_controller.dart';
 
 class RegisterScreen extends ConsumerWidget {
-  const RegisterScreen({super.key});
+  RegisterScreen({super.key});
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final auth = ref.read(authControllerProvider.notifier);
+
     return Scaffold(
+      appBar: AppBar(title: const Text("Register")),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+
             TextField(
               controller: emailController,
-              decoration: const InputDecoration(hintText: 'Email'),
+              decoration: const InputDecoration(
+                labelText: "Email",
+              ),
             ),
-            const SizedBox(height: 15),
+
+            const SizedBox(height: 20),
+
             TextField(
               controller: passwordController,
-              decoration: const InputDecoration(hintText: 'Password'),
               obscureText: true,
-            ),
-            const SizedBox(height: 25),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () async {
-                  await ref.read(authProvider.notifier).register(
-                        emailController.text,
-                        passwordController.text,
-                      );
-                  if (ref.read(authProvider) != null) {
-                    context.go('/home');
-                  }
-                },
-                child: const Text('Register'),
+              decoration: const InputDecoration(
+                labelText: "Password",
               ),
+            ),
+
+            const SizedBox(height: 30),
+
+            ElevatedButton(
+              onPressed: () async {
+                await auth.register(
+                  emailController.text,
+                  passwordController.text,
+                );
+
+                context.go('/home');
+              },
+              child: const Text("Register"),
             ),
           ],
         ),
