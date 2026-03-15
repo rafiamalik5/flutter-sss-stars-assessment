@@ -1,78 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/auth_provider.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends ConsumerWidget {
   const RegisterScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authProvider); // watch the auth state
+
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-
-            const Text(
-              "Welcome!",
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 10),
-
-            const Text(
-              "Please complete the required information",
-              textAlign: TextAlign.center,
-            ),
-
-            const SizedBox(height: 30),
-
-            TextField(
-              decoration: InputDecoration(
-                hintText: "Email",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 15),
-
-            TextField(
-              decoration: InputDecoration(
-                hintText: "Username",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 15),
-
-            TextField(
-              decoration: InputDecoration(
-                hintText: "Password",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 25),
-
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  context.go('/home');
-                },
-                child: const Text("Next"),
-              ),
-            )
-          ],
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            // Update the state
+            ref.read(authProvider.notifier).register('test@mail.com', 'Rafia');
+            context.go('/home');
+          },
+          child: const Text('Register and Go Home'),
         ),
       ),
     );
