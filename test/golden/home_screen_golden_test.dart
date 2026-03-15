@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_test_app/features/home/screens/home_screen.dart';
+import '../../../lib/features/home/screens/home_screen.dart';
 
 void main() {
   testGoldens('HomeScreen golden test', (tester) async {
