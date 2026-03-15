@@ -14,7 +14,6 @@ class AuthController extends StateNotifier<fb.User?> {
       state = credential.user;
     } catch (e) {
       // handle errors
-      print('Firebase register error: $e');
     }
   }
 
@@ -25,7 +24,7 @@ class AuthController extends StateNotifier<fb.User?> {
           .signInWithEmailAndPassword(email: email, password: password);
       state = credential.user;
     } catch (e) {
-      print('Firebase login error: $e');
+      // handle errors
     }
   }
 

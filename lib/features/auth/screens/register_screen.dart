@@ -46,6 +46,8 @@ class RegisterScreen extends ConsumerWidget {
                   passwordController.text,
                 );
 
+                if (!context.mounted) return;
+
                 context.go('/home');
               },
               child: const Text("Register"),
