@@ -22,20 +22,20 @@ const ProductIsarSchema = CollectionSchema(
       name: r'brand',
       type: IsarType.string,
     ),
-    r'brandName': PropertySchema(
-      id: 1,
-      name: r'brandName',
-      type: IsarType.string,
-    ),
     r'image': PropertySchema(
-      id: 2,
+      id: 1,
       name: r'image',
       type: IsarType.string,
     ),
     r'name': PropertySchema(
-      id: 3,
+      id: 2,
       name: r'name',
       type: IsarType.string,
+    ),
+    r'price': PropertySchema(
+      id: 3,
+      name: r'price',
+      type: IsarType.double,
     )
   },
   estimateSize: _productIsarEstimateSize,
@@ -59,7 +59,6 @@ int _productIsarEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.brand.length * 3;
-  bytesCount += 3 + object.brandName.length * 3;
   bytesCount += 3 + object.image.length * 3;
   bytesCount += 3 + object.name.length * 3;
   return bytesCount;
@@ -72,9 +71,9 @@ void _productIsarSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.brand);
-  writer.writeString(offsets[1], object.brandName);
-  writer.writeString(offsets[2], object.image);
-  writer.writeString(offsets[3], object.name);
+  writer.writeString(offsets[1], object.image);
+  writer.writeString(offsets[2], object.name);
+  writer.writeDouble(offsets[3], object.price);
 }
 
 ProductIsar _productIsarDeserialize(
@@ -85,10 +84,10 @@ ProductIsar _productIsarDeserialize(
 ) {
   final object = ProductIsar();
   object.brand = reader.readString(offsets[0]);
-  object.brandName = reader.readString(offsets[1]);
   object.id = id;
-  object.image = reader.readString(offsets[2]);
-  object.name = reader.readString(offsets[3]);
+  object.image = reader.readString(offsets[1]);
+  object.name = reader.readString(offsets[2]);
+  object.price = reader.readDouble(offsets[3]);
   return object;
 }
 
@@ -106,7 +105,7 @@ P _productIsarDeserializeProp<P>(
     case 2:
       return (reader.readString(offset)) as P;
     case 3:
-      return (reader.readString(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -332,142 +331,6 @@ extension ProductIsarQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'brand',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<ProductIsar, ProductIsar, QAfterFilterCondition>
-      brandNameEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'brandName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ProductIsar, ProductIsar, QAfterFilterCondition>
-      brandNameGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'brandName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ProductIsar, ProductIsar, QAfterFilterCondition>
-      brandNameLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'brandName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ProductIsar, ProductIsar, QAfterFilterCondition>
-      brandNameBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'brandName',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ProductIsar, ProductIsar, QAfterFilterCondition>
-      brandNameStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'brandName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ProductIsar, ProductIsar, QAfterFilterCondition>
-      brandNameEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'brandName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ProductIsar, ProductIsar, QAfterFilterCondition>
-      brandNameContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'brandName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ProductIsar, ProductIsar, QAfterFilterCondition>
-      brandNameMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'brandName',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<ProductIsar, ProductIsar, QAfterFilterCondition>
-      brandNameIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'brandName',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<ProductIsar, ProductIsar, QAfterFilterCondition>
-      brandNameIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'brandName',
         value: '',
       ));
     });
@@ -788,6 +651,69 @@ extension ProductIsarQueryFilter
       ));
     });
   }
+
+  QueryBuilder<ProductIsar, ProductIsar, QAfterFilterCondition> priceEqualTo(
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'price',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductIsar, ProductIsar, QAfterFilterCondition>
+      priceGreaterThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'price',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductIsar, ProductIsar, QAfterFilterCondition> priceLessThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'price',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<ProductIsar, ProductIsar, QAfterFilterCondition> priceBetween(
+    double lower,
+    double upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'price',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        epsilon: epsilon,
+      ));
+    });
+  }
 }
 
 extension ProductIsarQueryObject
@@ -807,18 +733,6 @@ extension ProductIsarQuerySortBy
   QueryBuilder<ProductIsar, ProductIsar, QAfterSortBy> sortByBrandDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'brand', Sort.desc);
-    });
-  }
-
-  QueryBuilder<ProductIsar, ProductIsar, QAfterSortBy> sortByBrandName() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'brandName', Sort.asc);
-    });
-  }
-
-  QueryBuilder<ProductIsar, ProductIsar, QAfterSortBy> sortByBrandNameDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'brandName', Sort.desc);
     });
   }
 
@@ -845,6 +759,18 @@ extension ProductIsarQuerySortBy
       return query.addSortBy(r'name', Sort.desc);
     });
   }
+
+  QueryBuilder<ProductIsar, ProductIsar, QAfterSortBy> sortByPrice() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'price', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ProductIsar, ProductIsar, QAfterSortBy> sortByPriceDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'price', Sort.desc);
+    });
+  }
 }
 
 extension ProductIsarQuerySortThenBy
@@ -858,18 +784,6 @@ extension ProductIsarQuerySortThenBy
   QueryBuilder<ProductIsar, ProductIsar, QAfterSortBy> thenByBrandDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'brand', Sort.desc);
-    });
-  }
-
-  QueryBuilder<ProductIsar, ProductIsar, QAfterSortBy> thenByBrandName() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'brandName', Sort.asc);
-    });
-  }
-
-  QueryBuilder<ProductIsar, ProductIsar, QAfterSortBy> thenByBrandNameDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'brandName', Sort.desc);
     });
   }
 
@@ -908,6 +822,18 @@ extension ProductIsarQuerySortThenBy
       return query.addSortBy(r'name', Sort.desc);
     });
   }
+
+  QueryBuilder<ProductIsar, ProductIsar, QAfterSortBy> thenByPrice() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'price', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ProductIsar, ProductIsar, QAfterSortBy> thenByPriceDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'price', Sort.desc);
+    });
+  }
 }
 
 extension ProductIsarQueryWhereDistinct
@@ -916,13 +842,6 @@ extension ProductIsarQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'brand', caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<ProductIsar, ProductIsar, QDistinct> distinctByBrandName(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'brandName', caseSensitive: caseSensitive);
     });
   }
 
@@ -937,6 +856,12 @@ extension ProductIsarQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<ProductIsar, ProductIsar, QDistinct> distinctByPrice() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'price');
     });
   }
 }
@@ -955,12 +880,6 @@ extension ProductIsarQueryProperty
     });
   }
 
-  QueryBuilder<ProductIsar, String, QQueryOperations> brandNameProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'brandName');
-    });
-  }
-
   QueryBuilder<ProductIsar, String, QQueryOperations> imageProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'image');
@@ -970,6 +889,12 @@ extension ProductIsarQueryProperty
   QueryBuilder<ProductIsar, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<ProductIsar, double, QQueryOperations> priceProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'price');
     });
   }
 }
