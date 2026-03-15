@@ -1,29 +1,41 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb;
 
-// Dummy User class
-class User {
-  final String email;
-  final String username;
+final firebaseAuthProvider = fb.FirebaseAuth.instance;
 
-  User({required this.email, required this.username});
-}
+class AuthController extends StateNotifier<fb.User?> {
+  AuthController() : super(fb.FirebaseAuth.instance.currentUser);
 
-// AuthController using StateNotifier
-class AuthController extends StateNotifier<User?> {
-  AuthController() : super(null);
-
-  // Example: register user
-  void register(String email, String username) {
-    state = User(email: email, username: username);
+  // Register user
+  Future<void> register(String email, String password) async {
+    try {
+      final credential = await fb.FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      state = credential.user;
+    } catch (e) {
+      // handle errors
+      print('Firebase register error: $e');
+    }
   }
 
-  // Example: logout
-  void logout() {
+  // Login user
+  Future<void> login(String email, String password) async {
+    try {
+      final credential = await fb.FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      state = credential.user;
+    } catch (e) {
+      print('Firebase login error: $e');
+    }
+  }
+
+  // Logout
+  Future<void> logout() async {
+    await fb.FirebaseAuth.instance.signOut();
     state = null;
   }
 }
 
-// Provider
-final authProvider = StateNotifierProvider<AuthController, User?>(
+final authProvider = StateNotifierProvider<AuthController, fb.User?>(
   (ref) => AuthController(),
 );
