@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:flutter/material.dart';
-import 'package:your_app/main.dart' as app; // replace 'your_app' with your package name
+import 'package:flutter_test_app/main.dart' as app;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -12,13 +12,13 @@ void main() {
 
     final emailField = find.byType(TextField).first;
     final passwordField = find.byType(TextField).last;
-    final registerButton = find.text('Register');
 
     await tester.enterText(emailField, 'test@gmail.com');
     await tester.enterText(passwordField, 'password123');
-    await tester.tap(registerButton);
+
+    await tester.tap(find.text('Register'));
     await tester.pumpAndSettle();
 
-    expect(find.text('SSS Shop'), findsOneWidget); // HomeScreen title
+    expect(find.text('Home'), findsOneWidget);
   });
 }
