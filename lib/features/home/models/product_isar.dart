@@ -7,7 +7,7 @@ class ProductIsar {
   Id id = Isar.autoIncrement;
 
   late String name;
-  late double brand;
+  late String brand;   // changed to String
   late String image;
   late String brandName;
 }
