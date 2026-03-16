@@ -15,8 +15,8 @@ final productsCacheProvider = FutureProvider<List<Product>>((ref) async {
         .map((e) => Product(
             id: e.id.toString(),
             name: e.name,
-            price: e.price,
-            brand: e.brand,
+            price: e.brand, // adjust fields as needed
+            brand: e.brandName,
             image: e.image))
         .toList();
   }
@@ -28,8 +28,8 @@ final productsCacheProvider = FutureProvider<List<Product>>((ref) async {
   final isarProducts = products
       .map((e) => ProductIsar()
         ..name = e.name
-        ..price = e.price
-        ..brand = e.brand
+        ..brand = e.price
+        ..brandName = e.brand
         ..image = e.image)
       .toList();
 

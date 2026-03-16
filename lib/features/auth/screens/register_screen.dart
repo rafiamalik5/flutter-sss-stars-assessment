@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../controller/auth_controller.dart';
 
-class RegisterScreen extends ConsumerWidget {
-  RegisterScreen({super.key});
+class LoginScreen extends ConsumerWidget {
+  LoginScreen({super.key});
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -14,7 +14,7 @@ class RegisterScreen extends ConsumerWidget {
     final auth = ref.read(authControllerProvider.notifier);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Register")),
+      appBar: AppBar(title: const Text("Login")),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -41,23 +41,21 @@ class RegisterScreen extends ConsumerWidget {
 
             ElevatedButton(
               onPressed: () async {
-                try {
-                  await auth.register(
-                    emailController.text,
-                    passwordController.text,
-                  );
+                await auth.login(
+                  emailController.text,
+                  passwordController.text,
+                );
 
-                  if (!context.mounted) return;
-
-                  context.go('/home');
-                } catch (e) {
-                  if (!context.mounted) return;
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Registration failed: $e')),
-                  );
-                }
+                context.go('/home');
               },
-              child: const Text("Register"),
+              child: const Text("Login"),
+            ),
+
+            TextButton(
+              onPressed: () {
+                context.go('/register');
+              },
+              child: const Text("Create Account"),
             ),
           ],
         ),

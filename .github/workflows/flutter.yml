@@ -16,4 +16,3 @@ jobs:
       - run: flutter test --coverage
       - run: flutter format --set-exit-if-changed .
       - run: flutter test integration_test/app_test.dart
-
