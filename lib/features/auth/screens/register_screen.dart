@@ -41,14 +41,21 @@ class RegisterScreen extends ConsumerWidget {
 
             ElevatedButton(
               onPressed: () async {
-                await auth.register(
-                  emailController.text,
-                  passwordController.text,
-                );
+                try {
+                  await auth.register(
+                    emailController.text,
+                    passwordController.text,
+                  );
 
-                if (!context.mounted) return;
+                  if (!context.mounted) return;
 
-                context.go('/home');
+                  context.go('/home');
+                } catch (e) {
+                  if (!context.mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Registration failed: $e')),
+                  );
+                }
               },
               child: const Text("Register"),
             ),

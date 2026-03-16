@@ -41,14 +41,21 @@ class LoginScreen extends ConsumerWidget {
 
             ElevatedButton(
               onPressed: () async {
-                await auth.login(
-                  emailController.text,
-                  passwordController.text,
-                );
+                try {
+                  await auth.login(
+                    emailController.text,
+                    passwordController.text,
+                  );
 
-                if (!context.mounted) return;
+                  if (!context.mounted) return;
 
-                context.go('/home');
+                  context.go('/home');
+                } catch (e) {
+                  if (!context.mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Login failed: $e')),
+                  );
+                }
               },
               child: const Text("Login"),
             ),
